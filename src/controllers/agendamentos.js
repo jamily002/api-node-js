@@ -26,6 +26,10 @@ module.exports = {
         }
     }, 
 
+
+
+
+
     async cadastrarAgendamento(request, response) {
         try {
 
@@ -67,12 +71,49 @@ module.exports = {
     }, 
 
 
+
+
     async editarAgendamento(request, response) {
         try {
+
+            const {psi_id ,usu_id, agd_data_consulta,agd_inicio_consulta,agd_fim_consulta, agd_anotacoes_consulta}  = request.body;
+            const { agd_id } = request.params;
+            const sql = `
+            UPDATE agendamentos SET
+              psi_id = ?, usu_id =?, agd_data_consulta=?, agd_inicio_consulta=?, 
+           agd_fim_consulta=?, agd_anotacoes_consulta =?
+           WHERE
+             agd_id = ?;
+       `;
+       const values = [agd_id, psi_id ,usu_id, agd_data_consulta,agd_inicio_consulta,agd_fim_consulta, agd_anotacoes_consulta];
+
+       const [result] = await db.query(sql, values);
+
+       
+
+       if (result.affectedRows ---0){
+        return response.status(404).json({
+            sucesso:false,
+            mansagem: 'Agendamento ${agd_id} não encontrado!',
+            dados:null
+        });
+       }
+
+       const dados = {
+          agd_id ,
+          psi_id ,
+          usu_id, 
+          agd_data_consulta,
+          agd_inicio_consulta,
+          agd_fim_consulta, 
+          agd_anotacoes_consulta
+       };
+
+
             return response.status(200).json({
                 sucesso: true, 
-                mensagem: 'Alteração no Agendamento', 
-                dados: null
+                mensagem: 'Alteração no Agendamento $(agd_id) atualizada com sucesso!', 
+                dados
             });
         } catch (error) {
             return response.status(500).json({
@@ -82,6 +123,20 @@ module.exports = {
             });
         }
     }, 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     async apagarAgendamento(request, response) {

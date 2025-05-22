@@ -7,13 +7,13 @@ const publicacaoController = require ('../controllers/publicacao');
 
 router.get('/agendamentos', agendamentoController.listarAgendamento); 
 router.post('/agendamentos', agendamentoController.cadastrarAgendamento); 
-router.patch('/agendamentos', agendamentoController.editarAgendamento); 
+router.patch('/agendamentos/:agd_id', agendamentoController.editarAgendamento); 
 router.delete('/Agendamentos', agendamentoController.apagarAgendamento); 
 
 
 router.get('/publicacao',publicacaoController.listarPublicacao); 
 router.post('/publicacao', publicacaoController.cadastrarPublicacao); 
-router.patch('/publicacao',publicacaoController.editarPublicacao); 
+router.patch('/publicacao/:id',publicacaoController.editarPublicacao); 
 router.delete('/publicacao', publicacaoController.apagarPublicacao); 
 
 

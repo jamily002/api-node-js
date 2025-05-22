@@ -26,6 +26,9 @@ module.exports = {
     }, 
 
 
+
+
+
     async cadastrarPublicacao(request, response) {
         try {
             const {psi_id, titulo, texto, data_postagem, imagem, status} = request.body;
@@ -60,6 +63,18 @@ module.exports = {
             });
         }
     }, 
+
+
+
+
+
+
+
+
+
+
+
+
     async editarPublicacao(request, response) {
         try {
             const {psi_id, titulo, texto, data_postagem, imagem, status} = request.body;
@@ -68,6 +83,7 @@ module.exports = {
                  UPDATE publicacao SET
                    psi_id = ?, pub_titulo = ?, pub_texto = ?,
                    pub_data_postagem = ?, pub_imagem = ?, pub_status = ? 
+                WHERE
                    pub_id = ?;
             
             `;
@@ -82,10 +98,20 @@ module.exports = {
                 });
             };
 
+            const dados = {
+                id,
+                psi_id,
+                titulo, 
+                texto, 
+                data_postagem,
+                imagem, 
+                status
+            };
+
             return response.status(200).json({
                 sucesso: true, 
-                mensagem: 'Alteração na Publicação', 
-                dados: null
+                mensagem: 'Alteração ${id} atualizada com sucesso!', 
+                dados
             });
         } catch (error) {
             return response.status(500).json({
@@ -95,6 +121,26 @@ module.exports = {
             });
         }
     }, 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     async apagarPublicacao(request, response) {
         try {
             return response.status(200).json({
