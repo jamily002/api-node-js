@@ -91,7 +91,7 @@ module.exports = {
 
        
 
-       if (result.affectedRows ---0){
+       if (result.affectedRows === 0){
         return response.status(404).json({
             sucesso:false,
             mansagem: 'Agendamento ${agd_id} não encontrado!',
@@ -141,9 +141,23 @@ module.exports = {
 
     async apagarAgendamento(request, response) {
         try {
+
+            const {agd_id} = request.params;
+            const sql = `DELETE FROM agendamentos WHERE agd_id = ?`;
+            const values = [agd_id];
+            const [result] = await db.query(sql,values);
+   
+            if (result.affectedRows ===0){
+               return response.status(404).json({
+                      sucesso: false,
+                      mensagem:`Agendamento ${agd_id} não encontrado!`,
+                      dados:null
+   
+               });
+            }
             return response.status(200).json({
                 sucesso: true, 
-                mensagem: 'Exclusão do Agendamento', 
+                mensagem: `Agendamento ${agd_id} excluido com sucesso`, 
                 dados: null
             });
         } catch (error) {

@@ -26,9 +26,6 @@ module.exports = {
     }, 
 
 
-
-
-
     async cadastrarPublicacao(request, response) {
         try {
             const {psi_id, titulo, texto, data_postagem, imagem, status} = request.body;
@@ -65,41 +62,30 @@ module.exports = {
     }, 
 
 
-
-
-
-
-
-
-
-
-
-
     async editarPublicacao(request, response) {
         try {
             const {psi_id, titulo, texto, data_postagem, imagem, status} = request.body;
-            const {id} = request.params;
+            const {pub_id} = request.params;
             const sql = `
-                 UPDATE publicacao SET
+                 UPDATE publicacoes SET
                    psi_id = ?, pub_titulo = ?, pub_texto = ?,
                    pub_data_postagem = ?, pub_imagem = ?, pub_status = ? 
                 WHERE
-                   pub_id = ?;
-            
+                   pub_id = ?;            
             `;
-            const values = [psi_id, titulo, texto, data_postagem, imagem, status, id];
+            const values = [psi_id, titulo, texto, data_postagem, imagem, status, pub_id];
             const [ result] = await db.query(sql, values);
 
-            if(result.affectedRows --- 0){
+            if(result.affectedRows === 0){
                 return response.status(404).json({
                     sucesso: false, 
-                    mensagem: 'Publicação ${id} não encontrado!', 
+                    mensagem: `Publicação ${pub_id} não encontrado!`, 
                     dados: null
                 });
             };
 
             const dados = {
-                id,
+                pub_id,
                 psi_id,
                 titulo, 
                 texto, 
@@ -110,7 +96,7 @@ module.exports = {
 
             return response.status(200).json({
                 sucesso: true, 
-                mensagem: 'Alteração ${id} atualizada com sucesso!', 
+                mensagem: `Alteração ${pub_id} atualizada com sucesso!`, 
                 dados
             });
         } catch (error) {
@@ -125,27 +111,26 @@ module.exports = {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     async apagarPublicacao(request, response) {
         try {
+
+         const {pub_id} = request.params;
+         const sql = `DELETE FROM publicacoes WHERE pub_id = ?`;
+         const values = [pub_id];
+         const [result] = await db.query(sql,values);
+
+         if (result.affectedRows === 0){
+            return response.status(404).json({
+                   sucesso: false,
+                   mensagem:`Publicação ${pub_id} não encontrado!`,
+                   dados:null
+
+            });
+         }
+
             return response.status(200).json({
                 sucesso: true, 
-                mensagem: 'Exclusão da Publicação', 
+                mensagem: `Publicação ${pub_id} excluido com sucesso!`, 
                 dados: null
             });
         } catch (error) {

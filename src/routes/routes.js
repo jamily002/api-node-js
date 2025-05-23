@@ -8,13 +8,13 @@ const publicacaoController = require ('../controllers/publicacao');
 router.get('/agendamentos', agendamentoController.listarAgendamento); 
 router.post('/agendamentos', agendamentoController.cadastrarAgendamento); 
 router.patch('/agendamentos/:agd_id', agendamentoController.editarAgendamento); 
-router.delete('/Agendamentos', agendamentoController.apagarAgendamento); 
+router.delete('/Agendamentos/:agd_id', agendamentoController.apagarAgendamento); 
 
 
 router.get('/publicacao',publicacaoController.listarPublicacao); 
 router.post('/publicacao', publicacaoController.cadastrarPublicacao); 
-router.patch('/publicacao/:id',publicacaoController.editarPublicacao); 
-router.delete('/publicacao', publicacaoController.apagarPublicacao); 
+router.patch('/publicacao/:pub_id',publicacaoController.editarPublicacao); 
+router.delete('/publicacao/:pub_id', publicacaoController.apagarPublicacao); 
 
 
 
